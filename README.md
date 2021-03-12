@@ -10,6 +10,7 @@ at address ranges 0000 - 00C4 and 0100 - 01FF
 stack pointer (SP) start 01FF
 
 PIA1 address set to 8000
+
 PIA2 address set to 4000
 
 PIA1 port A output
