@@ -11,7 +11,10 @@ stack pointer (SP) start 01FF
 
 currently PIA address set to 8000
 
-PIA port A output
+PIA1 port A output
 
-PIA port B input
+PIA1 port B input
 
+TODO: add the PIA 2 code for new breakout board (#4000)
+
+PIA2 port B input
