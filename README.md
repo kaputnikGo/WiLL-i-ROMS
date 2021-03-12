@@ -9,12 +9,13 @@ at address ranges 0000 - 00C4 and 0100 - 01FF
 
 stack pointer (SP) start 01FF
 
-currently PIA address set to 8000
+PIA1 address set to 8000
+PIA2 address set to 4000
 
 PIA1 port A output
 
 PIA1 port B input
 
-TODO: add the PIA 2 code for new breakout board (#4000)
+TODO: add the PIA 2 code for new breakout board
 
 PIA2 port B input
