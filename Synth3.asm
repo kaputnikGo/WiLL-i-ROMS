@@ -1,10 +1,11 @@
-; SYNTH3 CODE - 12 Nov 2019
+; SYNTH3 CODE - 13 Mar 2021
 ; hack for Heathkit ET-3400 Audio Setup - PIA B input var parameter, tested, working
 ; user RAM = 197 + 256 bytes = 453
 ; addr 0000 - 00C4 and 0100 - 01FF
 ; using PIA addr 8000 (not 0400)
 ; mpu clock speed is default/low (quoted as 0.5 MHz), expecting ~894750 cycles per second
-; working, def blaster to explosion, ramp down
+; working, def blaster to explosion, ramp down, has quiet echo effect
+; testing for PIA 2
 
 ;*************************************;
 ; Main loop scratch memory reserves
@@ -14,14 +15,18 @@
 0008 : 00                             ;
 0009 : nn                             ; changes
 000A : nn                             ; changes
+; ~ not used
+000B :
+0011 :
+; ~ end not used
 0012 : 00                             ;
 0013 : nn                             ; A inner loop length and divisor from PIA B
-0014 : 80                             ; B inner loop LFO-like, counts down FF to 00 fast to slow
+0014 : nn                             ; B inner loop LFO-like, counts down FF to 00 fast to slow
 0015 : 20                             ; A loop speed
-0016 : 00 FF                          ; IX ,16 = 00 and 17 counts down from FF
+0016 : 00 nn                          ; IX ,16 = 00 and 17 counts down from FF
 0018 : 20                             ; A loop speed
-0019 : 00                             ; 
-001A : 00                             ; 
+0019 : 00                             ;
+001A : 00 00                          ; 
 001C : 00                             ; end main loop mem
 ;*************************************;
 ;RESET INIT (POWER-ON) org 001D
@@ -40,12 +45,12 @@
 ;*************************************;
 ;SYNTH3 - mod for PIA B into addr 13
 ;*************************************;
-0035 : 86 20      ldaa  #$20          ;load A with 20h (0010 0000)
+0035 : 86 20      ldaa  #$20          ;load A with 20h (0010 0000) - param2 ( up to 80)?
 0037 : 97 15      staa  $15           ;store A in addr 15
 0039 : 97 18      staa  $18           ;store A in addr 18
 003B : B6 80 02   ldaa $8002          ;load A with PIA B
 003E : CE 00 01   ldx #$0001          ;load X with 0001h
-0041 : C6 80      ldab  #$80          ;load B with 80h, 1 ramp (orig FFh 2 ramps)
+0041 : C6 80      ldab  #$80          ;load B with 80h, 1 ramp (orig FFh 2 ramps) - param2 ?
 0043 : 01         nop                 ;nop, retain in case of ldab 8002
 0044 : 97 13      staa  $13           ;store A in addr 13
 ;LOOP1
@@ -70,19 +75,20 @@
 0063 : DE 16      ldx $16             ;load X with addr 16
 ;LOOP4
 0065 : 09         dex                 ;decr X
-0066 : 26 FD      bne $F8FD           ;branch != 0 LOOP4
+0066 : 26 FD      bne L0065           ;branch != 0 LOOP4
 0068 : 5A         decb                ;decr B
-0069 : 26 E1      bne $F8E4           ;branch != 0 LOOP3
+0069 : 26 E1      bne L004C           ;branch != 0 LOOP3
 006B : D6 14      ldab  $14           ;load B with addr 14
 006D : D0 13      subb  $13           ;subtract B - addr 13 into B
-006F : 27 09      beq $F912           ;branch if = 0 to GOTO3
+006F : 27 09      beq L007A           ;branch if = 0 to GOTO3
 0071 : DE 16      ldx $16             ;load X with addr 16
 0073 : 08         inx                 ;incr X
 0074 : 96 18      ldaa  $18           ;load A with addr 18
-0076 : 27 D0      beq $F8E0           ;branch = 0 LOOP2
-0078 : 20 CC      bra $F8DE           ;branch always LOOP1
+0076 : 27 D0      beq L0048           ;branch = 0 LOOP2
+0078 : 20 CC      bra L0046           ;branch always LOOP1
 ;GOTO3
-007A : 7E 00 35   jmp L0035           ;jump to IRQ loop start
+;007A : B6 80 02   ldaa  $4002         ;load A with PIA2 B - need to init
+007A : 7E 00 35   jmp L0035           ;jump to SYNTH3 loop start
 ;*************************************;
 ;end
 ;*************************************; 
