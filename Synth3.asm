@@ -1,57 +1,56 @@
-; SYNTH3 CODE - 13 Mar 2021
+; SYNTH3 CODE - 14 Mar 2021
 ; hack for Heathkit ET-3400 Audio Setup - PIA B input var parameter, tested, working
 ; user RAM = 197 + 256 bytes = 453
 ; addr 0000 - 00C4 and 0100 - 01FF
 ; using PIA addr 8000 (not 0400)
 ; mpu clock speed is default/low (quoted as 0.5 MHz), expecting ~894750 cycles per second
 ; working, def blaster to explosion, ramp down, has quiet echo effect
-; testing for PIA 2
-
+; PIA 2 addrs and INIT fix
+;
+; SW demo:
+; [1111 1110][0000 0010]
+;
 ;*************************************;
 ; Main loop scratch memory reserves
 ;*************************************;
 0000 : 00                             ; not used
 ; ~       RESERVED
 0008 : 00                             ;
-0009 : nn                             ; changes
-000A : nn                             ; changes
+0009 : nn                             ; var: ! program to FF before run !
+000A : nn                             ; var: ! program to FF before run !
+000B : 00                             ; not used
 ; ~ not used
-000B :
-0011 :
-; ~ end not used
+0011 : 00                             ; not used
 0012 : 00                             ;
 0013 : nn                             ; A inner loop length and divisor from PIA B
 0014 : nn                             ; B inner loop LFO-like, counts down FF to 00 fast to slow
 0015 : 20                             ; A loop speed
 0016 : 00 nn                          ; IX ,16 = 00 and 17 counts down from FF
 0018 : 20                             ; A loop speed
-0019 : 00                             ;
-001A : 00 00                          ; 
-001C : 00                             ; end main loop mem
 ;*************************************;
-;RESET INIT (POWER-ON) org 001D
+;RESET INIT (POWER-ON) org 0019
 ;*************************************;
-001D : 8E 01 FF   lds #$01FF          ; load SP with 01FFh
-0020 : CE 80 00	  ldx #$8000          ; load X with 8000h, PIA (DAC) addr
-0023 : 6F 01		  clr	$01,x           ; clear(00) addr X + 01h (8001, PIA DDR port A) 
-0025 : 6F 03      clr $03,x           ; clear(00) addr X + 03h (8003, PIA DDR port B)
-0027 : 6F 02      clr $02,x           ; clear(00) addr X + 02h (8002, port B input)
-0029 : 86 FF		  ldaa	#$FF          ; load A with FFh (1111 1111)
-002B : A7 00		  staa	$00,x         ; store A in addr X + 00h (8000, port A output)
-002D : 86 3C		  ldaa	#$3C          ; load A with 3Ch(0011 1100)
-002F : A7 01		  staa	$01,x         ; store A in addr X + 01h (8001)
-0031 : 86 37      ldaa  #$37          ; load A with 37h(0011 0111)(28h 0010 1000)
-0033 : A7 03      staa  $03,x         ; store A in addr X + 03h (8003)
+0019 : 8E 01 FF   lds #$01FF          ; load SP with 01FFh
+001C : CE 80 00	  ldx #$8000          ; load X with 8000h, PIA1 (DAC) addr
+001F : 6F 02      clr $02,x           ; clear(00) addr X + 02h (set 8002 PIA1 PR/DDR port B in)
+0021 : 86 FF		  ldaa	#$FF          ; load A with FFh (1111 1111)
+0023 : A7 00		  staa	$00,x         ; store A in addr X + 00h (set 8000 PIA1 PR/DDR port A out)
+0025 : 86 3C		  ldaa	#$3C          ; load A with 3Ch(0011 1100)
+0027 : A7 01		  staa	$01,x         ; store A in addr X + 01h (8001 PIA1 CR port A)
+0029 : 86 37      ldaa  #$37          ; load A with 37h(0011 0111)
+002B : A7 03      staa  $03,x         ; store A in addr X + 03h (8003 PIA1 CR port B) 
+002D : 7F 40 02   clr X4002           ; clear(00) 4002h (set PIA2 PR/DDR port B in)
+0030 : 86 04      ldaa  #$04          ; set CR bit 2 high for PIA2
+0032 : B7 40 03   staa X4003          ; store A in addr 4003 (PIA2 CR port B)
 ;*************************************;
 ;SYNTH3 - mod for PIA B into addr 13
 ;*************************************;
-0035 : 86 20      ldaa  #$20          ;load A with 20h (0010 0000) - param2 ( up to 80)?
-0037 : 97 15      staa  $15           ;store A in addr 15
-0039 : 97 18      staa  $18           ;store A in addr 18
-003B : B6 80 02   ldaa $8002          ;load A with PIA B
-003E : CE 00 01   ldx #$0001          ;load X with 0001h
-0041 : C6 80      ldab  #$80          ;load B with 80h, 1 ramp (orig FFh 2 ramps) - param2 ?
-0043 : 01         nop                 ;nop, retain in case of ldab 8002
+0035 : B6 40 02   ldaa  $4002         ;load A with PIA2 B - need to init 20h (0010 0000) up to 80)?
+0038 : 97 15      staa  $15           ;store A in addr 15
+003A : 97 18      staa  $18           ;store A in addr 18
+003C : B6 80 02   ldaa $8002          ;load A with PIA B
+003F : CE 00 01   ldx #$0001          ;load X with 0001h
+0042 : C6 80      ldab  #$80          ;load B with 80h, 1 ramp (orig FFh 2 ramps) - can be param2 ?
 0044 : 97 13      staa  $13           ;store A in addr 13
 ;LOOP1
 0046 : DF 16      stx $16             ;store X in addr 16
@@ -87,8 +86,7 @@
 0076 : 27 D0      beq L0048           ;branch = 0 LOOP2
 0078 : 20 CC      bra L0046           ;branch always LOOP1
 ;GOTO3
-;007A : B6 80 02   ldaa  $4002         ;load A with PIA2 B - need to init
-007A : 7E 00 35   jmp L0035           ;jump to SYNTH3 loop start
+007D : 7E 00 35   jmp L0035           ;jump to SYNTH3 loop start
 ;*************************************;
 ;end
 ;*************************************; 
