@@ -8,6 +8,9 @@
 ; working, looping one shot with ramp up/down, pitch/frequency and duration params
 ; INIT and PIA2 fix 
 ;
+; SW demo:
+; [1111 0000][0000 1111]
+;
 ;*************************************;
 ; Main loop scratch memory reserves
 ;*************************************;
