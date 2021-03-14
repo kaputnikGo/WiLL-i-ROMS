@@ -9,6 +9,7 @@
 ;
 ; SW demo:
 ; [0010 0000][1111 1101]
+; [0001 1111][1111 1101] -not scratchy, pulsing
 ;
 ;*************************************;
 ; Main loop scratch memory reserves
