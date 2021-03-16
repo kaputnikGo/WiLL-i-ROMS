@@ -5,25 +5,23 @@
 ; using PIA addr 8000 (not 0400)
 ; mpu clock speed is default/low (quoted as 0.5 MHz), expecting ~894750 cycles per second
 ; working, constant 2 tone buzz, phasing at start, pitch param
-; refactor
+; refactor, PIA2 read, messy
 ;
 ; SW demo :
-; [1110 0101][---- ----]
+; [0111 0010][0001 1100]
 ;
 ;*************************************;
-; Main loop scratch memory reserves
+; Main loop scratch memory reserves ** org 0000 **
 ;*************************************;
-0000 : --                             ;not used
-; ~ not used
-0006 : --                             ;not used
-0007 : 01                             ; B, PIA1 B param changes pitch (00=hi FF=lo)
-0008 : --                             ;not used
-; ~ not used
-000A : --                             ;not used
+0000 : 7F 40 02   clr X4002           ; clear(00) 4002h (set PIA2 PR/DDR port B in)
+0003 : 86 04      ldaa  #$04          ; set CR bit 2 high for PIA2
+0005 : B7 40 03   staa X4003          ; store A in addr 4003 (PIA2 CR port B)
+0008 : 20 22      bra L002C           ; branch always to 002C
+000A : nn                             ; B, PIA1 B param changes pitch (00=hi FF=lo)
 000B : 01 56                          ; X
-000D : 01 77                          ; X, 01 nn changes
-000F : 00 2C                          ; X, nn 2C changes
-0011 : 03 02                          ; ?, nn 02 changes
+000D : 01 nn                          ; X
+000F : nn 2C                          ; X
+0011 : nn nn                          ; A,
 0013 : 08                             ; B
 0014 : 01                             ; A
 0015 : 02                             ; B
@@ -36,14 +34,14 @@
 001F : 00 2C                          ; X
 0021 : A0                             ; A
 0022 : 08                             ; A
-0023 : 00                             ; clr
+0023 : nn                             ; PIA2 B store
 0024 : 7F D9                          ; ldx at 007C 
-0026 : FF D9                          ; writes 0166
+0026 : FF D9                          ; writes from 0166
 0028 : 7F 24                          ; ...
 002A : 00 24                          ; to here
 ;*************************************;
-;RESET INIT (POWER-ON) org 002C
-;*************************************; NOTE : restarts require 00 from 0024 - 002B
+;RESET INIT (POWER-ON) org moved for PIA2 B init and bra to here
+;*************************************;
 002C : 8E 01 FF   lds #$01FF          ; load SP with 01FFh
 002F : CE 80 00	  ldx #$8000          ; load X with 8000h, PIA1 (DAC) addr
 0032 : 6F 02      clr $02,x           ; clear(00) addr X + 02h (set 8002 PIA1 PR/DDR port B in)
@@ -53,21 +51,21 @@
 003A : A7 01		  staa	$01,x         ; store A in addr X + 01h (8001 PIA1 CR port A)
 003C : 86 37      ldaa  #$37          ; load A with 37h(0011 0111)
 003E : A7 03      staa  $03,x         ; store A in addr X + 03h (8003 PIA1 CR port B) 
-0040 : 01 01      nop nop             ;
-0042 : 01 01      nop nop             ;
+0040 : 01         nop                 ;
 ;*************************************;
 ;IRQ / PARAM5 main loop start
 ;*************************************;
-0044 : F6 80 02   ldab $8002          ;load B with PIA B
-0047 : 86 10      ldaa #$10           ;load A with 10h (0001 0000)
+0041 : B6 40 02   ldaa $4002          ;load A with PIA2 B
+0044 : F6 80 02   ldab $8002          ;load B with PIA1 B
+0047 : 97 23      nop nop             ;97 23 staa 23
 0049 : CE 00 80   ldx #$0080          ;load X with 0080h <- not used?
-004C : D7 07      stab  $07           ;store B in addr 07
+004C : D7 0A      stab  $0A           ;store B in addr 0A
 ;*************************************;
 ;PARAM13 - modified lots:
 ; rem bne to PARAM14, bsr and more
 ;*************************************;
-004E : 96 07      ldaa  $07           ;load A with addr 07
-0050 : 7C 00 07   inc $0007           ;incr addr 0007
+004E : 96 0A      ldaa  $0A           ;load A with addr (07) 0A
+0050 : 7C 00 0A   inc $000A           ;incr addr (0007) 000A
 0053 : 86 0D      ldaa  #$0D          ;load A with value 0Dh (0000 1101)
 0055 : 16         tab                 ;transfer A to B
 0056 : 58         aslb                ;arithmetric shift left B(C <- b7 - b0 <- 0)
@@ -114,7 +112,7 @@
 009F : BD 00 B0   jsr $00B0           ;jump sub CALCOS
 00A2 : 17         tba                 ;transfer B to A
 00A3 : DF 1B      stx $1B             ;store X in addr 1B
-00A5 : 7F 00 23   clr $0023           ;clear addr 0023
+00A5 : 01 01 01   nop nop nop         ;
 00A8 : BD 00 B0   jsr $00B0           ;jump sub CALCOS
 00AB : DF 1D      stx $1D             ;store X in addr 1D
 00AD : 7E 01 00   jmp $0100           ;jump to SYNTH9
@@ -129,6 +127,7 @@
 00BB : DE 0D		  ldx	$0D             ; load X with addr 0D
 ;GOTO7
 00BD : 39		      rts                 ; return sub
+;00BE - 00C4: unused
 ;*************************************;00C4
 ;SYNTH9 - modified:
 ; rem beq PARAM14
@@ -145,9 +144,9 @@
 0112 : 08         inx                 ;incr X
 0113 : DF 0D      stx $0D             ;store X in addr 0D
 ;LOOP1
-0115 : CE 00 24   ldx #$0024          ;$FC00, load X with 0024h
+0115 : CE 00 23   ldx #$0023          ;$FC00, load X with 0023h PIA2 store (from 0024)
 ;LOOP2
-0118 : 96 07      ldaa  $07           ;$FC03, load A with addr 07 (PIA B)
+0118 : 96 0A      ldaa  $0A           ;$FC03, load A with addr (07) 0A (PIA B)
 ;LOOP3
 011A : 4A         deca                ;$FC05, decr A
 011B : 26 FD      bne $011A           ;branch !=0 LOOP3
@@ -166,7 +165,7 @@
 012E : 08         inx                 ;incr X
 012F : 09         dex                 ;decr X
 0130 : 01         nop                 ;no op
-0131 : 7E 00 44   jmp $0044           ;jump to IRQ
+0131 : 7E 00 41   jmp $0041           ;jump to IRQ
 ;*************************************;
 ;PARAM18
 ;*************************************;
