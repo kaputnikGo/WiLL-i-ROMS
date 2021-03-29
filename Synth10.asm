@@ -45,41 +45,41 @@
 ;*************************************;
 ;IRQ 0036
 ;*************************************;
-;0036 : 5F				  clrb                ;clear B (00) <-- B is decr later
+;0036 : 5F        clrb                ;clear B (00) <-- B is decr later
 0036 : 01         nop                 ;B is now set via PIA2
-0037 : BD 00 3C   jsr	L003C           ;jump sub SYNTH10 <-- bsr
-003A : 20 F0		  bra	L002C           ;branch always PIA read
+0037 : BD 00 3C   jsr L003C           ;jump sub SYNTH10 <-- bsr
+003A : 20 F0      bra L002C           ;branch always PIA read
 ;*************************************;
 ;SYNTH10 003C - only 00s and com 1s (0s to 1s, 1s to 0s) in DAC 
 ;*************************************;
-003C : CE 00 E0   ldx	#$00E0          ;load X with 00E0h <-- X counter
+003C : CE 00 E0   ldx  #$00E0         ;load X with 00E0h <-- X counter
 ;SYN101
-;003F : 86 20		  ldaa	#$20          ;load A with value 20h (0010 0000) <-- start freq/pitch
+;003F : 86 20      ldaa  #$20          ;load A with value 20h (0010 0000) <-- start freq/pitch
 003F : 96 00      ldaa $00            ;load A with value in addr 00 (set by PIA1)
-0041 : 8D 14		  bsr	L0057           ;branch sub CALCOS
+0041 : 8D 14      bsr  L0057          ;branch sub CALCOS
 ;SYN102
-0043 : 09				  dex                 ;decr X
-0044 : 26 FD		  bne	L0043           ;branch Z=0 SYN102 <-- silent start loop length
-0046 : 7F 80 00   clr	$8000           ;clear (00) in DAC output SOUND
+0043 : 09         dex                 ;decr X
+0044 : 26 FD      bne  L0043          ;branch Z=0 SYN102 <-- silent start loop length
+0046 : 7F 80 00   clr  $8000          ;clear (00) in DAC output SOUND
 ;SYN103
-0049 : 5A				  decb                ;decr B <-- B not set, so negative num (N=1)?
-004A : 26 FD		  bne	L0049           ;branch Z=0 SYN103
-004C : 73 80 00   com	$8000           ;complement 1s in DAC output SOUND
-004F : DE 09		  ldx	$09             ;load X with value in addr 09
-0051 : 8C 10 00   cpx	#$1000          ;compare X with value 1000h <-- sets the lfo for ramp dwn speed/length
-0054 : 26 E9		  bne	L004D           ;branch Z=0 SYN101
-0056 : 39				  rts                 ;return subroutine
+0049 : 5A         decb                ;decr B <-- B not set, so negative num (N=1)?
+004A : 26 FD      bne  L0049          ;branch Z=0 SYN103
+004C : 73 80 00   com  $8000          ;complement 1s in DAC output SOUND
+004F : DE 09      ldx  $09            ;load X with value in addr 09
+0051 : 8C 10 00   cpx  #$1000         ;compare X with value 1000h <-- sets the lfo for ramp dwn speed/length
+0054 : 26 E9      bne  L004D          ;branch Z=0 SYN101
+0056 : 39         rts                 ;return subroutine
 ;*************************************;
 ;CALCOS 0057
 ;*************************************;
-0057 : DF 09		  stx	$09             ;store X in addr 09
-0059 : 9B 0A		  adda	$0A           ;add A with value in addr 0A
-005B : 97 0A		  staa	$0A           ;store A in addr 0A
-005D : 24 03		  bcc	L0070           ;branch if C=0 CAL1
-005F : 7C 00 09   inc	X0009           ;incr value in addr 0009
+0057 : DF 09      stx  $09            ;store X in addr 09
+0059 : 9B 0A      adda  $0A           ;add A with value in addr 0A
+005B : 97 0A      staa  $0A           ;store A in addr 0A
+005D : 24 03      bcc  L0070          ;branch if C=0 CAL1
+005F : 7C 00 09   inc  X0009          ;incr value in addr 0009
 ;CAL1
-0062 : DE 09		  ldx	$09             ;load X with value at addr 09
-0064 : 39				  rts                 ;return subroutine
+0062 : DE 09      ldx  $09            ;load X with value at addr 09
+0064 : 39          rts                ;return subroutine
 ;0065 end
 ;*************************************;
 ;00C5 monitor RAM
