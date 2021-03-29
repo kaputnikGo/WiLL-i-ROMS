@@ -1,4 +1,4 @@
-; SYNTH10 CODE - 28 Mar 2021
+; SYNTH10 CODE - 29 Mar 2021
 ; hack for Heathkit ET-3400 Audio Setup
 ; user RAM = 196 + 255 bytes = 453
 ; addr 0000 - 00C4 and 0100 - 01FF
@@ -9,8 +9,8 @@
 ; low, fuzz, single saw down type - sound 9 in ROM dump 
 ;
 ;
-; SW demo :
-; [---- ----][---- ----]
+; SW demo (flipped):
+; [0000 1101][0000 0000]
 ;
 ;*************************************;
 ; Scratch RAM (0000-0007F) (with typical values)
@@ -40,31 +40,33 @@
 ;*************************************;
 002C : B6 80 02   ldaa  $8002         ;load A with PIA1 B
 002F : 97 00      staa  $00           ;store A in addr 00
-0031 : B6 40 02   ldaa  $4002         ;load A with PIA2 B
-0034 : 97 01      staa  $01           ;store A in addr 01
+0031 : F6 40 02   ldab  $4002         ;load B with PIA2 B
+0034 : D7 01      stab  $01           ;store B in addr 01
 ;*************************************;
 ;IRQ 0036
 ;*************************************;
-0036 : 5F				  clrb                ;clear B (00)
+;0036 : 5F				  clrb                ;clear B (00) <-- B is decr later
+0036 : 01         nop                 ;B is now set via PIA2
 0037 : BD 00 3C   jsr	L003C           ;jump sub SYNTH10 <-- bsr
 003A : 20 F0		  bra	L002C           ;branch always PIA read
 ;*************************************;
-;SYNTH10 003C - only 00s and com 1s (0s to 1s, 1s to 0s) in DAC (pure sqr wave)
+;SYNTH10 003C - only 00s and com 1s (0s to 1s, 1s to 0s) in DAC 
 ;*************************************;
-003C : CE 00 E0   ldx	#$00E0          ;load X with 00E0h <-- poss param?
+003C : CE 00 E0   ldx	#$00E0          ;load X with 00E0h <-- X counter
 ;SYN101
-003F : 86 20		  ldaa	#$20          ;load A with value 20h (0010 0000)
+;003F : 86 20		  ldaa	#$20          ;load A with value 20h (0010 0000) <-- start freq/pitch
+003F : 96 00      ldaa $00            ;load A with value in addr 00 (set by PIA1)
 0041 : 8D 14		  bsr	L0057           ;branch sub CALCOS
 ;SYN102
 0043 : 09				  dex                 ;decr X
-0044 : 26 FD		  bne	L0043           ;branch Z=0 SYN102
+0044 : 26 FD		  bne	L0043           ;branch Z=0 SYN102 <-- silent start loop length
 0046 : 7F 80 00   clr	$8000           ;clear (00) in DAC output SOUND
 ;SYN103
-0049 : 5A				  decb                ;decr B
+0049 : 5A				  decb                ;decr B <-- B not set, so negative num (N=1)?
 004A : 26 FD		  bne	L0049           ;branch Z=0 SYN103
 004C : 73 80 00   com	$8000           ;complement 1s in DAC output SOUND
 004F : DE 09		  ldx	$09             ;load X with value in addr 09
-0051 : 8C 10 00   cpx	#$1000          ;compare X with value 1000h <-- poss param?
+0051 : 8C 10 00   cpx	#$1000          ;compare X with value 1000h <-- sets the lfo for ramp dwn speed/length
 0054 : 26 E9		  bne	L004D           ;branch Z=0 SYN101
 0056 : 39				  rts                 ;return subroutine
 ;*************************************;
