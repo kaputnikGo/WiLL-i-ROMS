@@ -17,6 +17,4 @@ PIA1 port A output
 
 PIA1 port B input
 
-TODO: add the PIA 2 code for new breakout board
-
 PIA2 port B input
