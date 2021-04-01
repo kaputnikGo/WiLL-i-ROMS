@@ -1,4 +1,4 @@
-; SYNTH8 CODE - 30 Mar 2021
+; SYNTH8CODE - 1 Apr 2021
 ; hack for Heathkit ET-3400 Audio Setup
 ; user RAM = 196 + 255 bytes = 453
 ; addr 0000 - 00C4 and 0100 - 01FF
@@ -12,12 +12,21 @@
 ; current: A2, G2, A2, E2, F2, C#2, D2 || A1 stuck and held
 ; note: 01BE change from F8 to CC for last jmp write location means mem length broken here.
 ; find melody fdb length sentinel var
-; duration + pair pitch values for samp freq/counter ?
+; duration + pair pitch values for samp freq/counter?
+;
+; added SoundROM6 melody FDB for testing
 ;
 ; SW demo :
 ; [---- ----][---- ----]
 ; note from older SYNTH8.asm file: if write flood starts at $0016, PIA2 write to $0022 (001E here) adds inner loop, and
 ; PIA1 writes to $0011 (000D here) changes pitch
+;
+;possible addition to make programming heathkit easier (from SoundROM6):
+;F81E : CE 00 7F   ldx #$007F    ;load X with value 007F
+;RST1:
+;F821 : 6F 00      clr	$00,x     ;clear addr X + 00h
+;F823 : 09         dex           ;decr X
+;F824 : 26 FB      bne	LF821     ;branch if Z=0 RST1 (loop clears mem addr 007F down to 0000)
 ;
 ;*************************************;
 ; Scratch RAM (0000-0007F) (with typical values)
@@ -189,6 +198,14 @@
 01C3 :                                ; 7C ends 0051,8C ends 0059, BC ends 0071, CC ends 0079 
 ;01C4 end                             ; 
 ;*************************************;
+; alt melody from Pharaoh ROM
+FECD : 34 7C 29 05 56 7C 1D 05        ;
+FED5 : FE 7C 17 0C B2 7C 1D 0B        ;
+FEDD : FC 7C 29 05 56 F8 04 07        ;
+FEE5 : FF 7C 29 05 56 7C 1D 05        ;
+FEED : FE 7C 17 06 59 7C 04 07        ;
+FEF5 : FF 7C 1D 05 ;FE 7C 17 06
+;*************************************;
 ;01C5 monitor RAM
 ; remainder from orig ROM below 
 3F 2C E2 F8 12 0D 74 F8 
@@ -207,6 +224,7 @@
 29 23 1D 17 12 0D 08 04
 ;*************************************;
 ;original ROM:
+;*************************************;
 ;called by NMI -> PARAM7
 FD94 : 0C 7F 1D 0F FB 7F 23	0F
 FD9C : 15	FE 08 50 8A 88 3E	3F
@@ -230,3 +248,29 @@ FE24 : 0B	50 FE 1D 5F	E4 00	47
 FE2C : 3F	37 30	29 23	1D 17	12
 FE34 : 0D 08 04
 ;FE36 - FD94 = A2h (162 bytes)
+;*************************************;
+; SoundROM 6 (Pharaoh) melody fdb
+;*************************************;
+FECD : 34 7C 29 05 56 7C 1D 05
+FED5 : FE 7C 17 0C B2 7C 1D 0B
+FEDD : FC 7C 29 05 56 F8 04 07
+FEE5 : FF 7C 29 05 56 7C 1D 05
+FEED : FE 7C 17 06 59 7C 04 07
+FEF5 : FF 7C 1D 05 ;FE 7C 17 06
+;
+FEFD : 59	7C 29 2A B6 18 F8	04 
+FF05 : 02	FF 00 23 06	01 F8 04 
+FF0D : 03	FF 00 23 02	AB F8	04
+FF15 : 07 FF 7C 29 15 5B 60 7C
+FF1D : 1D 05 FE F8 04 1F FF 7C 
+FF25 : 04	1F FF 7C 1D 11 FA 00 
+FF2D : 1D 02 FF 7C 1D	02 FF 7C 
+FF35 : 17 0C B2 7C 1D	0B FC	7C 
+FF3D : 23 0A AD 7C 37	09 83	7C 
+FF45 : 3F 11 F5 3E 3F	11 F5 7C 
+FF4D : 17	16 34	7C 1D 02 FF 7C 
+FF55 : 17	0C B2 7C 1D 0B FC 7C 
+FF5D : 29 0A AD 7C 3F	04 7D 7C 
+FF65 : 37 04 C1 7C 3F 14 36	F8 
+FF6D : 1D 14 FF F8 04 03 FF 00 
+FF75 : 04 03 F8 F8 04 3F FF 00 
