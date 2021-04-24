@@ -1,5 +1,5 @@
 # WiLL-i-ROMS
-Functioning assembly code for 6800 mpu, 6821 pia and 1408 dac
+Functioning assembly code for Heathkit ET-3400 with a 6800 mpu, 2x 6821 pia to a 1408 dac
 
 TODO: add the souce info and labels,plus full fdb listings
 
