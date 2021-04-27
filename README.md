@@ -3,7 +3,7 @@ Functioning assembly code for Heathkit ET-3400 with a 6800 mpu, 2x 6821 pia to a
 
 Using the Heathkit ET-3400 MPU board and Williams Electronics sound rom code from systems 3-7 pinball and arcade games.
 
-Adding other ROM routines as and when they are sorted. Currently adding prototype game Rat Race.
+Adding other ROM routines as and when they are sorted and usable. Currently adding prototype game Rat Race.
 
 
 
