@@ -5,9 +5,12 @@ Using the Heathkit ET-3400 MPU board and Williams Electronics sound rom code fro
 
 Adding other ROM routines as and when they are sorted. Currently adding prototype game Rat Race.
 
+
+
 ***TODO:*** 
 
 Change file names to reflect source ROMs. Original Synths are from ROM 15.
+
 
 
 ***HARDWARE NOTES:***
