@@ -5,11 +5,11 @@ Using the Heathkit ET-3400 MPU board and Williams Electronics sound rom code fro
 
 Adding other ROM routines as and when they are sorted. Currently adding prototype game Rat Race.
 
-# TODO: 
+**TODO:** 
 Change file names to reflect source ROMs. Original Synths are from ROM 15.
 
 
-# HARDWARE NOTES:
+**HARDWARE NOTES:**
 user RAM is 197 + 256 = 453 bytes
 
 at address ranges 0000 - 00C4 and 0100 - 01FF
