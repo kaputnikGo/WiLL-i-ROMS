@@ -1,5 +1,5 @@
               ;
-              ; updated 19 April 2021
+              ; updated 01 May 2021
               ;
               ;  Disassembled by:
               ;    DASMx object code disassembler
@@ -67,95 +67,95 @@ TIMER    EQU  1
 ;*
 ;*GLOBALS
 ;*
-  ORG  0
-TLKGL    RMB  4        ;TALKING GLOBALS
-BG1FLG   RMB  1        ;BACKGROUND SOUND 1
-BG2FLG   RMB  1        ;BACKGROUND SOUND 2
-SP1FLG   RMB  1        ;SPINNER FLAG
-B2FLG    RMB  1        ;BONUS #2 FLAG
-ORGFLG   RMB  1        ;ORGAN FLAG
-HI       RMB  1        ;RANDOM SEED
-LO       RMB  1        ;RANDOM SEED
+  ORG  0               ;DESCRIPTION              : ADDR
+;TLKGL    RMB  4        ;TALKING GLOBALS <-- not used
+BG1FLG   RMB  1        ;BACKGROUND SOUND 1       : 0000
+BG2FLG   RMB  1        ;BACKGROUND SOUND 2       : 0001
+SP1FLG   RMB  1        ;SPINNER FLAG             : 0002
+B2FLG    RMB  1        ;BONUS #2 FLAG            : 0003
+ORGFLG   RMB  1        ;ORGAN FLAG               : 0004
+HI       RMB  1        ;RANDOM SEED              : 0005
+LO       RMB  1        ;RANDOM SEED              : 0006
 ;*
 ;*TEMPORARIES
 ;*
 TMPRAM   EQU  *        ;TEMPORARY RAM
-TEMPX    RMB  2        ;X TEMPS
-XPLAY    RMB  2
-XPTR     RMB  2
-TEMPA    RMB  1        ;ACCA TEMP
-TEMPB    RMB  1
+TEMPX    RMB  2        ;X TEMPS                  : 0007-0008
+XPLAY    RMB  2        ;                         : 0009-000A
+XPTR     RMB  2        ;                         : 000B-000C
+TEMPA    RMB  1        ;ACCA TEMP                : 000D
+TEMPB    RMB  1        ;                         : 000E
 LOCRAM   EQU  *
 ;*
 ;*GWAVE PARAMETERS
 ;*
   ORG  LOCRAM
-GECHO    RMB  1        ;ECHO FLAG
-GCCNT    RMB  1        ;CYCLE COUNT
-GECDEC   RMB  1        ;# OF DECAYS PER ECHO
-GDFINC   RMB  1        ;DELTA FREQ INC
-GDCNT    RMB  1        ;DELTA FREQ COUNT
-GWFRM    RMB  2        ;WAVEFORM ADDRESS
+GECHO    RMB  1        ;ECHO FLAG                : 000F
+GCCNT    RMB  1        ;CYCLE COUNT              : 0010
+GECDEC   RMB  1        ;# OF DECAYS PER ECHO     : 0011
+GDFINC   RMB  1        ;DELTA FREQ INC           : 0012
+GDCNT    RMB  1        ;DELTA FREQ COUNT         : 0013
+GWFRM    RMB  2        ;WAVEFORM ADDRESS         : 0014-0015
 ;*TEMPORARY OR COMPUTED PARAMETERS
-PRDECA   RMB  1        ;PRE-DECAY FACTOR
-GWFRQ    RMB  2        ;FREQ TABLE ADDR
-FRQEND   RMB  2        ;END ADDR FREQ TABLE
-WVEND    RMB  2        ;WAVE END ADDR
-GPER     RMB  1        ;PERIOD
-GECNT    RMB  1        ;# OF ECHOES COUNTER
-FOFSET   RMB  1        ;FREQUENCY OFFSET
+PRDECA   RMB  1        ;PRE-DECAY FACTOR         : 0016
+GWFRQ    RMB  2        ;FREQ TABLE ADDR          : 0017-0018
+FRQEND   RMB  2        ;END ADDR FREQ TABLE      : 0019-001A
+WVEND    RMB  2        ;WAVE END ADDR            : 001B-001C
+GPER     RMB  1        ;PERIOD                   : 001D
+GECNT    RMB  1        ;# OF ECHOES COUNTER      : 001E
+FOFSET   RMB  1        ;FREQUENCY OFFSET         : 001F
 ;*
 ;*GWAVE TABLES
 ;*
-GWTAB    RMB  WVELEN   ;WAVE TABLE
+GWTAB    RMB  WVELEN   ;WAVE TABLE               : 0020-0092
 ;*
 ;*VARIWAVE PARAMETERS
 ;*
   ORG  LOCRAM
-LOPER    RMB  1        ;LO PERIOD
-HIPER    RMB  1        ;HIPERIOD
-LODT     RMB  1        ;PERIOD DELTAS
-HIDT     RMB  1
-HIEN     RMB  1        ;END PERIOD
-SWPDT    RMB  2        ;SWEEP PERIOD
-LOMOD    RMB  1        ;BASE FREQ MOD
-VAMP     RMB  1        ;AMPLITUDE
-LOCNT    RMB  1        ;PERIOD COUNTERS
-HICNT    RMB  1
+LOPER    RMB  1        ;LO PERIOD                : 000F
+HIPER    RMB  1        ;HIPERIOD                 : 0010
+LODT     RMB  1        ;PERIOD DELTAS            : 0011
+HIDT     RMB  1        ;                         : 0012
+HIEN     RMB  1        ;END PERIOD               : 0013
+SWPDT    RMB  2        ;SWEEP PERIOD             : 0014-0015
+LOMOD    RMB  1        ;BASE FREQ MOD            : 0016
+VAMP     RMB  1        ;AMPLITUDE                : 0017
+LOCNT    RMB  1        ;PERIOD COUNTERS          : 0018
+HICNT    RMB  1        ;                         : 0019
 ;*
 ;*NOISE ROUTINE PARAMETERS
 ;*
   ORG  LOCRAM
-DECAY    RMB  1
-NAMP     RMB  1
-CYCNT    RMB  1
-NFRQ1    RMB  2
-NFFLG    RMB  1
-LFREQ    RMB  1
-DFREQ    RMB  1
+DECAY    RMB  1        ;                         : 000F
+NAMP     RMB  1        ;                         : 0010
+CYCNT    RMB  1        ;                         : 0011
+NFRQ1    RMB  2        ;                         : 0012-0013
+NFFLG    RMB  1        ;                         : 0014
+LFREQ    RMB  1        ;                         : 0015
+DFREQ    RMB  1        ;                         : 0016
 ;*
 ;*FILTERED NOISE ROUTINE PARAMETERS
 ;*
   ORG  LOCRAM
-FMAX     RMB  1        ;MAXIMUM_FREQUENCY
-FHI      RMB  1        ;FREQUENCY
-FLO      RMB  1 
-SAMPC    RMB  2        ;SAMPLE COUNT
-FDFLG    RMB  1        ;FREQUENCY DECREMENT FLAG
-DSFLG    RMB  1        ;DISTORTION FLAG
+FMAX     RMB  1        ;MAXIMUM_FREQUENCY        : 000F
+FHI      RMB  1        ;FREQUENCY                : 0010
+FLO      RMB  1        ;                         : 0011
+SAMPC    RMB  2        ;SAMPLE COUNT             : 0012-0013
+FDFLG    RMB  1        ;FREQUENCY DECREMENT FLAG : 0014
+DSFLG    RMB  1        ;DISTORTION FLAG          : 0015
 ;*
 ;*SCREAM TABLES
 ;*
   ORG  LOCRAM
-STABLE  RMB  2*ECHOS   ;SCREAM TABLE
+STABLE  RMB  2*ECHOS   ;SCREAM TABLE             : 000F-0017
 SRMEND  EQU  *
 ;*
 ;*ORGAN PARAMETERS
 ;*
   ORG  LOCRAM
-DUR      RMB  2        ;NOTE DURATION
-OSCIL    RMB  1        ;OSCILLATORS
-RDELAY   RMB  60       ;RAM DELAY LOAD
+DUR      RMB  2        ;NOTE DURATION            : 000F-0010
+OSCIL    RMB  1        ;OSCILLATORS              : 0011
+RDELAY   RMB  60       ;RAM DELAY LOAD           : 0012-0072
 ;*
 ;* CHECKSUM CALCULATOR & RELOCATOR
 ;*
@@ -850,7 +850,7 @@ FB8E : DF 14      stx  $14       ;store X in addr 14 (GWFRM)
 FB90 : BD FC 4B   jsr  LFC4B     ;jump sub (WVTRAN)(XSFER WAVE TO RAM)
 FB93 : DE 07      ldx  $07       ;load X with value at addr 07 (TEMPX)(RESTORE INDEX)
 FB95 : A6 02      ldaa  $02,x    ;load A with value at addr X + 02h (GET PREDECAY)
-FB97 : 97 16      staa  $16      ;store A in addr 16 (PREDECA)
+FB97 : 97 16      staa  $16      ;store A in addr 16 (PRDECA)
 FB99 : BD FC 5D   jsr  LFC5D     ;jump sub (WVDECA) (DECAY IT)
 FB9C : DE 07      ldx  $07       ;load X with value at addr 07 (TEMPX)
 FB9E : A6 03      ldaa  $03,x    ;load A with value at addr X + 03h (GET FREQ INC)
