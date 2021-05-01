@@ -107,7 +107,7 @@ FOFSET   RMB  1        ;FREQUENCY OFFSET         : 001F
 ;*
 ;*GWAVE TABLES
 ;*
-GWTAB    RMB  WVELEN   ;WAVE TABLE               : 0020-0092
+GWTAB    RMB  WVELEN   ;WAVE TABLE               : 0020-0068 (32d+72d=104d)
 ;*
 ;*VARIWAVE PARAMETERS
 ;*
