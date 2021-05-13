@@ -1,4 +1,4 @@
-; SYNTH1/PARAM1 CODE - 22 Mar 2021
+; SYNTH1/PARAM1 CODE - 13 May2021
 ; hack for Heathkit ET-3400 Audio Setup - 2x PIA input params
 ; user RAM = 197 + 256 bytes = 453
 ; addr 0000 - 00C4 and 0100 - 01FF
@@ -6,6 +6,7 @@
 ; and PIA2 addr 8004-8007 (param3)
 ; mpu clock speed is default/low (quoted as 0.5 MHz), expecting ~894750 cycles per second
 ; using edited subroutines RESET, NMI, PARAM1, CALCOS, UTIL1, SYNTH1
+; source names: VARILD and VARI
 ; 
 ; PIA Addressing changes for breakout board
 ; fix for PIA2 DDR/CR set using extended addressing
@@ -190,4 +191,28 @@ HICNT    RMB  1
 ;    :|p1|p2|p3|p4|p5|p6|p7|count     ;
 010E : 28 01 00 08 81 02 00 FF FF     ; FOSHIT, Williams Boot
 ;*************************************; 
+
+;alternate VVECT to try:
+;Defender:
+FD60 : 40 01 00 10 E1 00 80 FF FF     ;SAW
+FD69 : 28 01 00 08 81 02 00 FF FF     ;FOSHIT 
+FD72 : 28 81 00 FC 01 02 00 FC FF     ;QUASAR
+FD7B : FF 01 00 18 41 04 80 00 FF     ;CABSHK 
+;Firepower:
+FD42 : 01 01 00 08 81 02 00 01 FF     ;
+FD4B : 01 08 00 01 20 01 00 01 FF     ;
+FD54 : 60 01 57 08 E1 02 00 FE B0     ;
+FD5D : FF 01 00 18 41 04 80 00 FF     ;CABSHK
+FD66 : FF 01 00 50 41 04 80 FF FF     ;
+;Algar,Pharaoh:
+FCD5 : 40 0F 00 99 09 02 00 F8 FF     ;
+FCDE : F0 0F 02 21 26 02 80 00 FF     ;
+FCE7 : 05 01 01 01 20 01 08 FF FF     ;
+FCF0 : FF 01 01 0F 02 01 80 00 FF     ;
+FCF9 : 01 20 01 23 00 03 20 00 FF     ;
+FD02 : 0E E7 35 33 79 03 80 F2 FF     ;also Solar Fire
+FD0B : 36 21 09 06 EF 03 C0 00 FF     ; "     "    "
+FD14 : 20 11 07 07 04 00 D0 00 BB     ;
+FD1D : 01 08 00 47 01 01 22 00 DD     ;
+FD26 : 17 0B 0D 44 01 02 03 00 CC     ;
 
