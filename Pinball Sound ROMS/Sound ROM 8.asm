@@ -901,7 +901,7 @@ F46E : 8D 02      bsr  LF472          ;branch sub IRQ2
 ;IRQ1
 F470 : 20 FE      bra  LF470          ;branch always IRQ1
 ;IRQ2
-F472 : 27 38      beq  LF4AC          ;branch Z=1 CAL1 (rts)
+F472 : 27 38      beq  LF4AC          ;branch Z=1 ADXX
 F474 : 80 02      suba  #$02          ;sub A with 02h
 F476 : 2B CE      bmi  LF446          ;branch N=1 SYNTH2
 F478 : 81 06      cmpa  #$06          ;compare A with 06h

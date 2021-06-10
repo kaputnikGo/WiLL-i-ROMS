@@ -16,7 +16,14 @@
         ;
         ;Pinball Sound ROM 5 Black Knight, with Speech ROMS
         ;
-        ;updated 17 May 2021
+        ;Vocabulary: 
+        ;(IC7) Knight, Black, Defend, Challenge
+        ;(IC5) Thee, Will You, 1(won), Again(partial)
+        ;(IC6) Again(partial), Slay, Cannot, Self, Enemy(partial)
+        ;(IC4) Enemy(partial), laughter, "F" and "R" sounds (?)
+        ;(IC?) Win, Enemies, Three, Me, Thyself, And, To(two), Fight, My, Against, Right
+        ;
+        ;updated 08 June 2021
         ;
         ;
 ;

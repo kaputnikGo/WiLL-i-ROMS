@@ -274,18 +274,18 @@ F95B : 39         rts                 ;return subroutine
 ;*NOISE LOAD PROG-ENTER WITH XREG POINTING TO DATA
 ;*
 ;NOISLD
-F95C : A6 00      ldaa  $00,x   ;load A with addr X + 00h
-F95E : 97 24      staa  X0024   ;store A in addr 24
-F960 : A6 01      ldaa  $01,x   ;load A with addr X + 01h
-F962 : 97 20      staa  X0020   ;store A in addr 20
-F964 : A6 02      ldaa  $02,x   ;load A with addr X + 02h
-F966 : 97 1F      staa  X001F   ;store A in addr 1F
-F968 : A6 03      ldaa  $03,x   ;load A with addr X + 03h
-F96A : 97 22      staa  X0022   ;store A in addr 22
-F96C : A6 04      ldaa  $04,x   ;load A with addr X + 04h
-F96E : 97 27      staa  X0027   ;store A in addr 27
+F95C : A6 00      ldaa  $00,x         ;load A with addr X + 00h
+F95E : 97 24      staa  $24           ;store A in addr 24
+F960 : A6 01      ldaa  $01,x         ;load A with addr X + 01h
+F962 : 97 20      staa  $20           ;store A in addr 20
+F964 : A6 02      ldaa  $02,x         ;load A with addr X + 02h
+F966 : 97 1F      staa  $1F           ;store A in addr 1F
+F968 : A6 03      ldaa  $03,x         ;load A with addr X + 03h
+F96A : 97 22      staa  $22           ;store A in addr 22
+F96C : A6 04      ldaa  $04,x         ;load A with addr X + 04h
+F96E : 97 27      staa  $27           ;store A in addr 27
 ;NEND
-F970 : 39         rts           ;return subroutine
+F970 : 39         rts                 ;return subroutine
 ;*************************************;
 ;Noise Table Loader #1
 ;*************************************;

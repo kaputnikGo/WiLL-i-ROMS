@@ -611,7 +611,7 @@ FB5A : BD F8 8A   jsr  LF88A          ;jump sub VARI
 FB5D : 20 0A      bra  LFB69          ;branch always IRQ6
 ;IRQ5 
 FB5F : 48         asla                ;arith shift left A
-FB60 : CE FC 43   ldx  #$FC43         ;load X with FC43h
+FB60 : CE FC 43   ldx  #$FC43         ;load X with FC43h (JMPTBL)
 FB63 : 8D 35      bsr  LFB9A          ;branch sub ADDX
 FB65 : EE 00      ldx  $00,x          ;load X with X+00h
 FB67 : AD 00      jsr  $00,x          ;jump sub X+00h

@@ -93,7 +93,7 @@ F85E : 4A          deca               ;decr A
 F85F : 5F          clrb               ;clear B
 F860 : 81 16       cmpa  #$16         ;comp A with 16h 
 F862 : 26 02       bne  LF866         ;branch Z=0 IRQ1
-F864 : D7 0A       stab  $000A        ;store B in addr 0A
+F864 : D7 0A       stab  $0A          ;store B in addr 0A
 ;IRQ1
 F866 : 81 05       cmpa  #$05         ;compare A with 05h 
 F868 : 27 06       beq  LF870         ;branch Z=1 IRQ2
