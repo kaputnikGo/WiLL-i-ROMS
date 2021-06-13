@@ -627,18 +627,18 @@ org $7800
 7B04 : 33         pulb                ;SP + 1 pull stack into B (RESTORE B)
 7B05 : 39         rts                 ;return subroutine
 ;*************************************;
-;Pulse synth uses NOTTBL,SNDTBL,WAVFRM tables
+;CHIME synth uses NOTTBL,SNDTBL,WAVFRM tables
 ;*************************************;
-;PULSE
+;CHIME
 7B06 : 84 1F      anda #$1F           ;and A with value 1Fh
-;PULSE1
-7B08 : 27 FE      beq L7B08           ;branch Z=1 PULSE1
+;CHIME1
+7B08 : 27 FE      beq L7B08           ;branch Z=1 CHIME1
 7B0A : 81 11      cmpa #$11           ;compare A with value 11h
-;PULSE2
-7B0C : 27 FE      beq L7B0C           ;branch Z=1 PULSE2
+;CHIME2
+7B0C : 27 FE      beq L7B0C           ;branch Z=1 CHIME2
 7B0E : 81 12      cmpa #$12           ;compare A with value 12h
-;PULSE3
-7B10 : 27 FE      beq L7B10           ;branch Z=1 PULSE3
+;CHIME3
+7B10 : 27 FE      beq L7B10           ;branch Z=1 CHIME3
 7B12 : 84 0F      anda #$0F           ;and A with value 0Fh
 7B14 : CE 7B F4   ldx #$7BF4          ;load X with value 7BF4h (NOTTBL)
 7B17 : BD 7B B4   jsr L7BB4           ;jump sub ADDX
@@ -649,40 +649,40 @@ org $7800
 7B23 : BD 7A 13   jsr L7A13           ;jump sub TRANS
 7B26 : CE 7C 04   ldx #$7C04          ;load X with value 7C04h (WAVFRM)
 7B29 : E6 00      ldab $00,x          ;load B with addr X
-;PULSE4
+;CHIME4
 7B2B : D7 1A      stab $1A            ;store B in addr 1A
 7B2D : DF 22      stx $22             ;store X in addr 22
-;PULSE5
+;CHIME5
 7B2F : CE 00 00   ldx #$0000          ;load X with value 0000h
 7B32 : C6 08      ldab #$08           ;load B with value 08h
 7B34 : D7 19      stab $19            ;store B in addr 19
-;PULSE6 
+;CHIME6 
 7B36 : A6 00      ldaa $00,x          ;load A with value in addr X
 7B38 : D6 18      ldab $18            ;load B with value in addr 18
 7B3A : 7D 00 1A   tst $001A           ;test value in addr 001A
-7B3D : 26 06      bne L7B45           ;branch Z=0 PULSE7
+7B3D : 26 06      bne L7B45           ;branch Z=0 CHIME7
 7B3F : A0 08      suba $08,x          ;subtract B with value in X,08h
 7B41 : A7 00      staa $00,x          ;store A in addr X
 7B43 : C0 03      subb #$03           ;subtract B with value 03h
-;PULSE7
+;CHIME7
 7B45 : 08         inx                 ;increment X
 7B46 : B7 84 00   staa $8400          ;store A in DAC output SOUND 
-;PULSE8
+;CHIME8
 7B49 : 5A         decb                ;decr B
-7B4A : 26 FD      bne L7B49           ;branch Z=0 PULSE8
+7B4A : 26 FD      bne L7B49           ;branch Z=0 CHIME8
 7B4C : 7A 00 19   dec $0019           ;decr value in addr 0019
-7B4F : 26 E5      bne L7B36           ;branch Z=0 PULSE6
+7B4F : 26 E5      bne L7B36           ;branch Z=0 CHIME6
 7B51 : 7A 00 1A   dec $001A           ;decr value in addr 001A
-7B54 : 2A D9      bpl L7B2F           ;branch N=0 PULSE5
+7B54 : 2A D9      bpl L7B2F           ;branch N=0 CHIME5
 7B56 : DE 22      ldx $22             ;load X with value in addr 22
 7B58 : 08         inx                 ;incr X
 7B59 : E6 00      ldab $00,x          ;load B with value in addr X
-7B5B : 26 CE      bne L7B2B           ;branch Z=0 PULSE4
+7B5B : 26 CE      bne L7B2B           ;branch Z=0 CHIME4
 7B5D : 86 80      ldaa #$80           ;load A with value 80h
 7B5F : B7 84 00   staa $8400          ;store A in DAC output SOUND 
 7B62 : 3E         wai                 ;wait for interrupt
-;PULSEX 
-7B63 : 20 A1      bra L7B06           ;branch always PULSE
+;CHIMEX 
+7B63 : 20 A1      bra L7B06           ;branch always CHIME
 ;*************************************;
 ;IRQ
 ;*************************************;
@@ -700,7 +700,7 @@ org $7800
 7B7B : 81 46      cmpa #$46           ;compare A with value 46h
 7B7D : 27 04      beq L7B83           ;branch Z=1 IRQ1
 7B7F : 85 40      bita #$40           ;bit test A with value 40h
-7B81 : 26 83      bne L7B06           ;branch Z=0 PULSE
+7B81 : 26 83      bne L7B06           ;branch Z=0 CHIME
 ;IRQ1 
 7B83 : 84 1F      anda #$1F           ;and A with value 1Fh
 7B85 : 27 17      beq L7B9E           ;branch Z=1 IRQ2
@@ -761,7 +761,7 @@ org $7800
 7BDF : BD 79 D0   jsr L79D0           ;jump sub SND1
 7BE2 : 20 F1      bra L7BD5           ;branch always NMI2
 ;*************************************;
-;data tables for PULSE
+;data tables for CHIME
 ;*************************************;
 ;SNDTBL
 7BE4 : DA FF DA 80 26 01 26 80

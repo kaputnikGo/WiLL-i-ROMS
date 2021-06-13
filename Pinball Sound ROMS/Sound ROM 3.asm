@@ -374,12 +374,12 @@ F927 : 26 EF      bne  LF918          ;branch Z=0 TRANS1
 F929 : 32         pula                ;SP + 1 pull stack into A
 F92A : 39         rts                 ;return subroutine
 ;*************************************;
-;Pulse synth uses NOTTBL,SNDTBL,WAVFRM tables
+;CHIME synth uses NOTTBL,SNDTBL,WAVFRM tables
 ;*************************************;
-;PULSE
+;CHIME
 F92B : 84 1F      anda  #$1F          ;and A with 1Fh
-;PULSE3
-F92D : 27 FE      beq  LF92D          ;branch Z=1 here PULSE3
+;CHIME3
+F92D : 27 FE      beq  LF92D          ;branch Z=1 here CHIME3
 F92F : 84 0F      anda  #$0F          ;and A with 0Fh
 F931 : CE 00 14   ldx  #$0014         ;load X with addr 14
 F934 : DF 10      stx  $10            ;store X in addr 10
@@ -392,37 +392,37 @@ F943 : C6 10      ldab  #$10          ;load B with 10h
 F945 : BD F9 17   jsr  LF917          ;jump sub TRANS
 F948 : CE FD 07   ldx  #$FD07         ;load X with FD07h WAVFRM
 F94B : E6 00      ldab  $00,x         ;load B with X+00h
-;PULSE4
+;CHIME4
 F94D : D7 26      stab  $26           ;store B in addr 26
 F94F : DF 10      stx  $10            ;store X in addr 10
-;PULSE5
+;CHIME5
 F951 : CE 00 14   ldx  #$0014         ;load X with addr 14
 F954 : C6 08      ldab  #$08          ;load B with 08h
 F956 : D7 25      stab  $25           ;store B in addr 25
-;PULSE6
+;CHIME6
 F958 : A6 00      ldaa  $00,x         ;load A with X+00h
 F95A : D6 24      ldab  $24           ;load B with addr 24
 F95C : 7D 00 26   tst  $0026          ;test addr 0026
-F95F : 26 06      bne  LF967          ;branch Z=0 PULSE7
+F95F : 26 06      bne  LF967          ;branch Z=0 CHIME7
 F961 : A0 08      suba  $08,x         ;sub A with X+08h
 F963 : A7 00      staa  $00,x         ;store A in X+00h
 F965 : C0 03      subb  #$03          ;sub B with 03h
-;PULSE7
+;CHIME7
 F967 : 08         inx                 ;incr X
 F968 : B7 04 00   staa  $0400         ;store A in DAC output SOUND
-;PULSE8
+;CHIME8
 F96B : 5A         decb                ;decr B
-F96C : 26 FD      bne  LF96B          ;branch Z=0 PULSE8
+F96C : 26 FD      bne  LF96B          ;branch Z=0 CHIME8
 F96E : 7A 00 25   dec  $0025          ;decr addr 0025
-F971 : 26 E5      bne  LF958          ;branch Z=0 PULSE6
+F971 : 26 E5      bne  LF958          ;branch Z=0 CHIME6
 F973 : 7A 00 26   dec  $0026          ;decr addr 0026
-F976 : 2A D9      bpl  LF951          ;branch N=0 PULSE5
+F976 : 2A D9      bpl  LF951          ;branch N=0 CHIME5
 F978 : DE 10      ldx  $10            ;load X with addr 10
 F97A : 08         inx                 ;incr X
 F97B : E6 00      ldab  $00,x         ;load B with X+00h
-F97D : 26 CE      bne  LF94D          ;branch Z=0 PULSE4
-;PULSEX
-F97F : 20 FE      bra  LF97F          ;branch always PULSEX
+F97D : 26 CE      bne  LF94D          ;branch Z=0 CHIME4
+;CHIMEX
+F97F : 20 FE      bra  LF97F          ;branch always CHIMEX
 ;*************************************;
 ;Knocker Routine
 ;*************************************;
@@ -870,7 +870,7 @@ FC05 : 27 09      beq  LFC10          ;branch Z=1 IRQ4
 FC07 : 84 1F      anda  #$1F          ;and A with 1Fh
 FC09 : 81 01      cmpa  #$01          ;compare A with 01h
 FC0B : 27 03      beq  LFC10          ;branch Z=1 IRQ4
-FC0D : 7E F9 2B   jmp  LF92B          ;jump PULSE
+FC0D : 7E F9 2B   jmp  LF92B          ;jump CHIME
 ;IRQ4
 FC10 : 84 1F      anda  #$1F          ;and A with 1Fh
 FC12 : 27 2A      beq  LFC3E          ;branch Z=1 IRQ7

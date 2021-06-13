@@ -236,12 +236,12 @@ F919 : 26 EF      bne  LF90A          ;branch Z=0 TRANS1
 F91B : 32         pula                ;SP+1 pull stack into A
 F91C : 39         rts                 ;return subroutine
 ;*************************************;
-;Pulse synth uses NOTTBL,SNDTBL,WAVFRM tables
+;CHIME synth uses NOTTBL,SNDTBL,WAVFRM tables
 ;*************************************;
-;PULSE
+;CHIME
 F91D : 84 1F      anda  #$1F          ;and A with 1Fh (000x xxxx)
-;PULSE3
-F91F : 27 FE      beq  LF91F          ;branch Z=1 PULSE3
+;CHIME3
+F91F : 27 FE      beq  LF91F          ;branch Z=1 CHIME3
 F921 : 84 0F      anda  #$0F          ;and A with 0Fh (0000 xxxx)
 F923 : CE 00 20   ldx  #$0020         ;load X with 0020h (start locram addr value)
 F926 : DF 1C      stx  $1C            ;store X in addr 1C (WVPTR)
@@ -254,37 +254,37 @@ F935 : C6 10      ldab  #$10          ;load B with 10h (counter for SNDTBL - 16d
 F937 : BD F9 09   jsr  LF909          ;jump sub TRANS (all 16 SNDTBL params to LOCRAM 0020-002F)
 F93A : CE FC C7   ldx  #$FCC7         ;load X with FCC7h (WAVFRM)
 F93D : E6 00      ldab  $00,x         ;load B with X+00h
-;PULSE4
+;CHIME4
 F93F : D7 32      stab  $32           ;store B in addr 32 (#WVFM)
 F941 : DF 1C      stx  $1C            ;store X in addr 1C (WVPTR)
-;PULSE5
+;CHIME5
 F943 : CE 00 20   ldx  #$0020         ;load X with 0020h (SNDPTR in locram)
 F946 : C6 08      ldab  #$08          ;load B with 08h (counter value)
 F948 : D7 31      stab  $31           ;store B in addr 31 (COUNT)
-;PULSE6
+;CHIME6
 F94A : A6 00      ldaa  $00,x         ;load A with X+00h (#SND)
 F94C : D6 30      ldab  $30           ;load B with addr 30 (#ENDNOT)
 F94E : 7D 00 32   tst  $0032          ;test addr 0032 (#WVFM)
-F951 : 26 06      bne  LF959          ;branch Z=0 PULSE7 (14th var in WAVTBL is 00)(non-zero or not identical)
+F951 : 26 06      bne  LF959          ;branch Z=0 CHIME7 (14th var in WAVTBL is 00)(non-zero or not identical)
 F953 : A0 08      suba  $08,x         ;sub A with X+08h (#SND-SNDPTR+08)
 F955 : A7 00      staa  $00,x         ;store A in X+00h
 F957 : C0 03      subb  #$03          ;sub A with 03h 
-;PULSE7
+;CHIME7
 F959 : 08         inx                 ;incr X (SNDPTR+1 next locram addr)
 F95A : B7 04 00   staa  $0400         ;store A in DAC output SOUND
-;PULSE8
+;CHIME8
 F95D : 5A         decb                ;decr B (#ENDNOT-1)
-F95E : 26 FD      bne  LF95D          ;branch Z=0 PULSE8
+F95E : 26 FD      bne  LF95D          ;branch Z=0 CHIME8
 F960 : 7A 00 31   dec  $0031          ;decr addr 0031 (COUNT)
-F963 : 26 E5      bne  LF94A          ;branch Z=0 PULSE6
+F963 : 26 E5      bne  LF94A          ;branch Z=0 CHIME6
 F965 : 7A 00 32   dec  $0032          ;decr addr 0032 (#WVFM-1)
-F968 : 2A D9      bpl  LF943          ;branch N=0 PULSE5
+F968 : 2A D9      bpl  LF943          ;branch N=0 CHIME5
 F96A : DE 1C      ldx  $1C            ;load X with addr 1C (WVPTR)
 F96C : 08         inx                 ;incr X (WVPTR+1)
 F96D : E6 00      ldab  $00,x         ;load B with X+00h
-F96F : 26 CE      bne  LF93F          ;branch Z=0 PULSE4
-;PULSEX 
-F971 : 20 FE      bra  LF971          ;branch always PULSEX
+F96F : 26 CE      bne  LF93F          ;branch Z=0 CHIME4
+;CHIMEX 
+F971 : 20 FE      bra  LF971          ;branch always CHIMEX
 ;*************************************;
 ;Knocker Routine
 ;*************************************;
@@ -698,7 +698,7 @@ FBD0 : 27 09      beq  LFBDB          ;branch Z=1 IRQ11
 FBD2 : 84 1F      anda  #$1F          ;and A with 1Fh
 FBD4 : 81 01      cmpa  #$01          ;compare A with 01h
 FBD6 : 27 03      beq  LFBDB          ;branch Z=1 IRQ11
-FBD8 : 7E F9 1D   jmp  LF91D          ;jump PULSE
+FBD8 : 7E F9 1D   jmp  LF91D          ;jump CHIME
 ;IRQ11 
 FBDB : 84 1F      anda  #$1F          ;and A with 1Fh
 FBDD : 26 01      bne  LFBE0          ;branch Z=0 IRQ12
