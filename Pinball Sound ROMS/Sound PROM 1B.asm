@@ -14,9 +14,9 @@
         ;
         ;  CPU:    Motorola 6800 (6800/6802/6808 family)
         ;
-        ;Sound PROM 1 System 3 : Disco Fever June 1978
+        ;Sound PROM 1B System 3 : Disco Fever June 1978
         ; Sound by: Randy Pfeiffer
-        ; same as World Cup (March 1978) - first Williams solid state game with electronic sounds.
+        ; different from World Cup (March 1978) - first Williams solid state game with electronic sounds.
         ;
         ; also possibly used in Contact as PROM (May 1978)
         ;
