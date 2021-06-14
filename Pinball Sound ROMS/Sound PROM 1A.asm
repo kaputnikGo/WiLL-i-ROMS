@@ -260,10 +260,10 @@ org  $7E00
 7F2F : C5 20      bitb  #$20          ;bit test B with 20h
 7F31 : 27 05      beq  L7F38          ;branch Z=1 IRQ3
 7F33 : C6 B9      ldab  #$B9          ;load B with B9h
-7F35 : 7E 7E A0   jmp  L7EA0          ;jump PSING
+7F35 : 7E 7E A0   jmp  L7EA0          ;jump PCHIME
 ;IRQ3
 7F38 : C4 0F      andb  #$0F          ;and B with 0Fh
-7F3A : 27 B8      beq  L7EF4          ;branch Z=1 PSINGX (PC at PTILT)
+7F3A : 27 B8      beq  L7EF4          ;branch Z=1 PCHIMX (PC at PTILT)
 7F3C : 5A         decb                ;decr B
 7F3D : 85 40      bita  #$40          ;bit test A with 40h
 7F3F : 26 0E      bne  L7F4F          ;branch Z=0 IRQ5
@@ -278,7 +278,7 @@ org  $7E00
 ;IRQ5
 7F4F : CE 7F DA   ldx  #$7FDA         ;load X with 7FDAh (SNDTBL3)
 7F52 : 8D 03      bsr  L7F57          ;branch sub ADDBX
-7F54 : 7E 7E A0   jmp  L7EA0          ;jump PSING
+7F54 : 7E 7E A0   jmp  L7EA0          ;jump PCHIME
 ;*************************************;
 ;Add B to Index Register
 ;*************************************;
@@ -352,7 +352,7 @@ org  $7E00
 7FBD : 7E 89                          ;SNALD4
 7FBF : 7E 9B                          ;SNALD5
 ;*************************************;
-;PSING tables
+;PCHIME tables
 ;*************************************;
 7FC1 : DA FF DA 80 26 01 26 80        ;SNDTBL1
 7FC9 : 07 0A 07 00 F9 F6 F9 00        ;
