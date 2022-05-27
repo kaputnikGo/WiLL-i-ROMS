@@ -14,7 +14,7 @@
         ;
         ;  CPU:    Motorola 6800 (6800/6802/6808 family)
         ;
-        ; Video ROM 3 Robotron 2048
+        ; Video ROM 3, Robotron 2048, 1982
         ; 
         ;
         ;redo, merge with source - source comments and notes are in CAPS
@@ -586,8 +586,7 @@ F1D7 : 39         rts                 ;return subroutine
 ;*************************************;
 ;*     SINE TABLE - FCB
 ;*************************************;
-;SINTBL
-F1D8 : 80 8C 98 A5 B0 BC C6 D0        ;
+F1D8 : 80 8C 98 A5 B0 BC C6 D0        ;SINTBL
 F1E0 : DA E2 EA F0 F5 FA FD FE        ;
 F1E8 : FF FE FD FA F5 F0 EA E2        ;
 F1F0 : DA D0 C6 BC B0 A5 98 8C        ;
@@ -645,8 +644,7 @@ F25E : 39         rts                 ;return subroutine
 ;*************************************;
 ;* KNOCKER PATTERN - FDB
 ;*************************************;
-;KNKTAB
-F25F : 01FC 02FC 03F8 04F8            ;
+F25F : 01FC 02FC 03F8 04F8            ;KNKTAB
 F267 : 06F8 08F4 0CF4 10F4            ;
 F26F : 20F2 40F1 60F1 80F1            ;
 F277 : A0F1 C0F1 0000                 ;
@@ -861,83 +859,82 @@ F3A0 : 20 B8      bra  LF35A          ;branch always SING2 (JUMP INTO COUNTDOWN 
 F3A2 : 33         pulb                ;SP+1 pull stack into B (RESTORE B)
 F3A3 : 39         rts                 ;return subroutine
 ;*************************************;
-;* tables for PULSE - not included in ROM?
+;* FCB tables for CHIME
 ;*************************************;
-;SNDTBL - FCB 
-F3A4 : DA FF DA 80 26 01 26 80        ;
+F3A4 : DA FF DA 80 26 01 26 80        ;SNDTBL
 F3AC : 07 0A 07 00 F9 F6 F9 00        ;
-;NOTTBL - FCB
-F3B4 : 3A 3E 50 46 33 2C 27 20        ;
+;
+F3B4 : 3A 3E 50 46 33 2C 27 20        ;NOTTBL
 F3BC : 25 1C 1A 17 14 11 10 33        ;
-;WAVFRM - FCB
-F3C4 : 08 03 02 01 02 03 04 05        ;
+;
+F3C4 : 08 03 02 01 02 03 04 05        ;WAVFRM
 F3CC : 06 0A 1E 32 70 00              ;
 ;*************************************;
-;* tables for PLAY
+;*FDB tables for PLAY
 ;*************************************;
-;VEC01 - FDB
-F3D1 : FFFF FF90 FFFF FFFF            ;
+;
+F3D1 : FFFF FF90 FFFF FFFF            ;VEC01
 F3DA : FFFF FF90 FFFF FFFF            ;
 F3E2 : FFFF FFFF 0000 0000            ;
 F3EA : 0000 0000                      ;
-;VEC02 - FDB
-F3EE : 4801 0000 3F3F 0000            ;
+;
+F3EE : 4801 0000 3F3F 0000            ;VEC02
 F3F6 : 4801 0000 0108 0000            ;
 F3FE : 8101 0000 01FF 0000            ;
 F406 : 0108 0000                      ;
-;VEC03 - FDB
-F40A : 0110 0000 3F3F 0000            ;
+;
+F40A : 0110 0000 3F3F 0000            ;VEC03
 F412 : 0110 0000 0505 0000            ;
 F41A : 0101 0000 31FF 0000            ;
 F422 : 0505 0000                      ;
-;VEC04 - FDB
-F426 : 3000 0000 7F00 0000            ;
+;
+F426 : 3000 0000 7F00 0000            ;VEC04
 F42E : 3000 0000 0100 0000            ;
 F436 : 7F00 0000 0200 0000            ;
 F43E : 0100 0000                      ;
-;VEC05 - FDB
-F442 : 0400 0004 7F00 007F            ;
+;
+F442 : 0400 0004 7F00 007F            ;VEC05
 F44A : 0400 0004 FF00 00A0            ;
 F452 : 0000 0000 0000 0000            ;
 F45A : FF00 00A0                      ;
-;VEC06 - FDB
-F45E : 0C68 6800 071F 0F00            ;
+;
+F45E : 0C68 6800 071F 0F00            ;VEC06
 F466 : 0C80 8000 FFFF FF00            ;
 F46E : 0000 0000 0000 0000            ;
 F476 : FFFF FF00                      ;
-;VEC016 - FDB
-F47A : 0104 0000 3F7F 0000            ;
+;
+F47A : 0104 0000 3F7F 0000            ;VEC016
 F482 : 0104 0000 05FF 0000            ;
 F48A : 0100 0000 4800 0000            ;
 F492 : 05FF 0000                      ;
-;VEC017 - FDB
-F496 : 0280 0030 0A7F 007F            ;
+;
+F496 : 0280 0030 0A7F 007F            ;VEC017
 F49E : 0280 0030 C080 0020            ;
 F4A6 : 0110 0015 C010 0000            ;
 F4AE : C080 0000                      ;
 ;*************************************;
-;* tables for SING
+;* FDB tables for SING
 ;*************************************;
-;VEC01X - FDB
-F4B2 : FF01 02C3 FF00                 ;
-;VEC02X - FDB
-F4B8 : 0103 FF80 FF00                 ;
-;VEC03X - FDB
-F4BE : 2003 FF50 FF00                 ;
-;VEC04X - FDB
-F4C4 : 5003 0120 FF00                 ;
-;VEC05X - FDB
-F4CA : FE04 0204 FF00                 ;
-;VEC06X - FDB
-F4D0 : 4803 010C FF00                 ;
-;VEC07X - FDB
-F4D6 : 4802 010C FF00                 ;
-;VEC08X - FDB
-F4DC : E001 0210 FF00                 ;
-;VEC09X - FDB
-F4E2 : 50FF 0000 6080                 ;
-;VEC10X - FDB
-F4E8 : FF02 0106 FF00                 ;
+;
+F4B2 : FF01 02C3 FF00                 ;VEC01X
+;
+F4B8 : 0103 FF80 FF00                 ;VEC02X
+;
+F4BE : 2003 FF50 FF00                 ;VEC03X
+;
+F4C4 : 5003 0120 FF00                 ;VEC04X
+;
+F4CA : FE04 0204 FF00                 ;VEC05X
+;
+F4D0 : 4803 010C FF00                 ;VEC06X
+;
+F4D6 : 4802 010C FF00                 ;VEC07X
+;
+F4DC : E001 0210 FF00                 ;VEC08X
+;
+F4E2 : 50FF 0000 6080                 ;VEC09X
+;
+F4E8 : FF02 0106 FF00                 ;VEC10X
 ;*************************************;
 ;*VARI LOADER
 ;*************************************;
@@ -1137,8 +1134,7 @@ F5FD : 7E F6 DB   jmp  LF6DB          ;jump NINIT2
 ;*************************************;
 ;*WHISTLE PARAMS - FCB
 ;*************************************;
-;WS1
-F600 : 90 10 02 14 40                 ;
+F600 : 90 10 02 14 40                 ;WS1
 F605 : B4 40 FF 14 30                 ;
 F60A : D0 32 02 10 60                 ;
 F60F : EE 20 02 08 54                 ;
@@ -1147,10 +1143,10 @@ F619 : C0 30 02 14 58                 ;
 F61E : AC 20 02 08 58                 ;
 F623 : A6 58 FF 18 22                 ;
 F628 : 00                             ;
-;CR1
-F629 : 30 10 FC 00 01                 ;
-;CR2
-F62E : 30 FC 01 00 01                 ;
+;
+F629 : 30 10 FC 00 01                 ;CR1
+;
+F62E : 30 FC 01 00 01                 ;CR2
 ;*************************************;
 ;*WHITE NOISE ROUTINE - noise with whistle routine (full)
 ;*************************************;
@@ -1408,16 +1404,15 @@ F783 : 20 20      bra  LF7A5          ;branch always FNLOAD
 ;FNTAB EQU  *  - FCB
 ;*************************************;
 ; : DSFLG,LOFRQ,DCYFLG,MAXFRQ,SMPCNT
-;BG1TB
-F785 : 00 00 00 01 00 00              ;
-;THTB
-F78B : 00 00 00 03 00 00              ;
-;CANTB
-F791 : 01 00 01 FF 03 E8              ;(DEFENDER SND #$17)
-;HBMBTB
-F797 : 01 01 01 40 10 00              ;
-;RAIN
-F79D : 01 80 01 40 FF                 ;
+F785 : 00 00 00 01 00 00              ;BG1TB
+;
+F78B : 00 00 00 03 00 00              ;THTB
+;
+F791 : 01 00 01 FF 03 E8              ;CANTB (DEFENDER SND #$17)
+;
+F797 : 01 01 01 40 10 00              ;HBMBTB
+;
+F79D : 01 80 01 40 FF                 ;RAIN
 ;*************************************;
 ;*HBOMB
 ;*************************************;
@@ -2206,25 +2201,17 @@ FC06 : F7A2                           ;HBOMB
 ;*VARI VECTORS - FCB
 ;*************************************;
 ;VVECT  EQU  *
-;SAW
-FC08 : 40 01 00 10 E1 00 80 FF FF     ;
-;FOSHIT
-FC11 : 28 01 00 08 81 02 00 FF FF     ;
-;QUASAR
-FC1A : 28 81 00 FC 01 02 00 FC FF     ;
-;CABSHK
-FC23 : FF 01 00 18 41 04 80 00 FF     ;
-;CSCALE
-FC2C : 00 FF 08 FF 68 04 80 00 FF     ;
-;MOSQTO
-FC35 : 28 81 00 FC 01 02 00 FC FF     ;
-;VARBG1
-FC3E : 60 01 57 08 E1 02 00 FE 80     ;
+FC08 : 40 01 00 10 E1 00 80 FF FF     ;SAW
+FC11 : 28 01 00 08 81 02 00 FF FF     ;FOSHIT
+FC1A : 28 81 00 FC 01 02 00 FC FF     ;QUASAR
+FC23 : FF 01 00 18 41 04 80 00 FF     ;CABSHK
+FC2C : 00 FF 08 FF 68 04 80 00 FF     ;CSCALE
+FC35 : 28 81 00 FC 01 02 00 FC FF     ;MOSQTO
+FC3E : 60 01 57 08 E1 02 00 FE 80     ;VARBG1
 ;*************************************;
 ;*RADIO SOUND WAVEFORM
 ;*************************************;
-;RADSND
-FC46 : 8C 5B B6 40 BF 49 A4 73        ;
+FC46 : 8C 5B B6 40 BF 49 A4 73        ;RADSND
 FC4F : 73 A4 49 BF 40 B6 5B 8C        ;
 ;*************************************;
 ;* NOTE DEFINITIONS AND ALL THAT JAZZ
@@ -2424,67 +2411,67 @@ FE3D : 1C 20 25 2A 30 35 3B 40        ;
 ;*BYTE 6: FREQ PATTERN OFFSET
 ;*
 ;SVTAB  EQU  *
-;HBDV
-FE45 : 81 24 00 00 00 16 31           ;HBDSND-GFRTAB 1
-;STDV
-FE4C : 12 05 1A FF 00 27 6D           ;STDSND-GFRTAB 2
-;DP1V
-FE53 : 11 05 11 01 0F 01 47           ;SWPAT-GFRTAB 3
-;XBV
-FE5A : 11 31 00 01 00 0D 1B           ;SPNSND-GFRTAB 4
-;BBSV
-FE61 : F4 12 00 00 00 14 47           ;BBSND-GFRTAB 5
-;HBEV
-FE68 : 41 45 00 00 00 0F 5B           ;HBESND-GFRTAB 6
-;PROTV
-FE6F : 21 35 11 FF 00 0D 1B           ;SPNSND-GFRTAB 7
-;SPNRV
-FE76 : 15 00 00 FD 00 01 69           ;SPNR-GFRTAB 8
-;CLDWNV
-FE7D : 31 11 00 01 00 03 6A           ;COOLDN-GFRTAB 9
-;SV3
-FE84 : 01 15 01 01 01 01 47           ;BBSND-GFRTAB 10
-;ED10
-FE8B : F6 53 03 00 02 06 94           ;ED10FP-GFRTAB 11
-;ED12
-FE92 : 6A 10 02 00 02 06 9A           ;ED13FP-GFRTAB 12
-;ED17
-FE99 : 1F 12 00 FF 10 04 69           ;SPNR-GFRTAB 13
-;BONV
-FEA0 : 31 11 00 FF 00 0D 00           ;BONSND-GFRTAB
-;TRBV
-FEA7 : 12 06 00 FF 01 09 28           ;TRBPAT-GFRTAB
+;HBDSND-GFRTAB 1
+FE45 : 81 24 00 00 00 16 31           ;HBDV
+;STDSND-GFRTAB 2
+FE4C : 12 05 1A FF 00 27 6D           ;STDV
+;SWPAT-GFRTAB 3
+FE53 : 11 05 11 01 0F 01 47           ;DP1V
+;SPNSND-GFRTAB 4
+FE5A : 11 31 00 01 00 0D 1B           ;XBV
+;BBSND-GFRTAB 5
+FE61 : F4 12 00 00 00 14 47           ;BBSV
+;HBESND-GFRTAB 6
+FE68 : 41 45 00 00 00 0F 5B           ;HBEV
+;SPNSND-GFRTAB 7
+FE6F : 21 35 11 FF 00 0D 1B           ;PROTV
+;SPNR-GFRTAB 8
+FE76 : 15 00 00 FD 00 01 69           ;SPNRV
+;COOLDN-GFRTAB 9
+FE7D : 31 11 00 01 00 03 6A           ;CLDWNV
+;BBSND-GFRTAB 10
+FE84 : 01 15 01 01 01 01 47           ;SV3
+;ED10FP-GFRTAB 11
+FE8B : F6 53 03 00 02 06 94           ;ED10
+;ED13FP-GFRTAB 12
+FE92 : 6A 10 02 00 02 06 9A           ;ED12
+;SPNR-GFRTAB 13
+FE99 : 1F 12 00 FF 10 04 69           ;ED17
+;BONSND-GFRTAB
+FEA0 : 31 11 00 FF 00 0D 00           ;BONV
+;TRBPAT-GFRTAB
+FEA7 : 12 06 00 FF 01 09 28           ;TRBV
 ;****************************************************
-;HUNV
-FEAE : 14 17 00 00 00 0E 0D           ;HBTSND-GFRTAB
-;SPD 
-FEB5 : F4 11 00 00 00 0E 0D           ;HBTSND-GFRTAB
-;SPNV
-FEBC : 21 30 00 01 00 0D 1B           ;SPNSND-GFRTAB
-;STRT
-FEC3 : 13 10 00 FF 00 09 A4           ;YUKSND-GFRTAB
+;HBTSND-GFRTAB
+FEAE : 14 17 00 00 00 0E 0D           ;HUNV
+;HBTSND-GFRTAB
+FEB5 : F4 11 00 00 00 0E 0D           ;SPD 
+;SPNSND-GFRTAB
+FEBC : 21 30 00 01 00 0D 1B           ;SPNV
+;YUKSND-GFRTAB
+FEC3 : 13 10 00 FF 00 09 A4           ;STRT
 ;SP1V
-FECA : F4 18 00 00 00 12 B3           ;SP2SND-GFRTAB
-;SSPV
-FED1 : 82 22 00 00 00 18 C6           ;SSPSND-GFRTAB
-;BMPV
-FED8 : F2 19 00 00 00 16 DF           ;BWSSND-GFRTAB
-;WIRDV
-FEDF : 21 30 00 FF 00 1B 0D           ;(same offset as hbtsnd-gfrtab)
-;GDYUKV
-FEE6 : F1 19 00 00 00 0E A4           ;YUKSND-GFRTAB
-;BK8
-FEED : 31 19 00 01 00 03 6A           ;COOLDN-GFRTAB
-;SF10
-FEF4 : 41 02 D0 00 00 27 6D           ;STDSND-GFRTAB
-;BIL30
-FEFB : 03 15 11 FF 00 0D 1B           ;SPNSND-GFRTAB
+FECA : F4 18 00 00 00 12 B3           ;SP1V
+;SSPVSSPSND-GFRTAB
+FED1 : 82 22 00 00 00 18 C6           ;SSPV
+;BWSSND-GFRTAB
+FED8 : F2 19 00 00 00 16 DF           ;BMPV
+;HBTSND-GFRTAB
+FEDF : 21 30 00 FF 00 1B 0D           ;WIRDV
+;YUKSND-GFRTAB
+FEE6 : F1 19 00 00 00 0E A4           ;GDYUKV
+;COOLDN-GFRTAB
+FEED : 31 19 00 01 00 03 6A           ;BK8
+;STDSND-GFRTAB
+FEF4 : 41 02 D0 00 00 27 6D           ;SF10 
+;SPNSND-GFRTAB
+FEFB : 03 15 11 FF 00 0D 1B           ;BIL30
 ;*************************************;
 ;*GWAVE FREQ PATTERN TABLE
 ;*************************************;
 ;GFRTAB  EQU  *
 ;
-;*BONUS  SOUND
+;*BONUS SOUND
 FF02 : A0 98 90 88 80 78 70 68        ;BONSND
 FF09 : 60 58 50 44 40                 ;
 ;*HUNDRED POINT SOUND

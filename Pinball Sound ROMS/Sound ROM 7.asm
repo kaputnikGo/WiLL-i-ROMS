@@ -957,7 +957,6 @@ FD6D : FC 27                          ;KNOCK
 ;*************************************;
 ;VVECT    EQU *
 ;*************************************;
-;called from PARAM1 
 FD6F : 40 01 00 10 E1 00 80 FF FF     ;SAW
 FD78 : 28 01 00 08 81 02 00 FF FF     ;FOSHIT
 FD81 : 00 FF 08 FF 68 04 80 00 FF     ;CSCALE

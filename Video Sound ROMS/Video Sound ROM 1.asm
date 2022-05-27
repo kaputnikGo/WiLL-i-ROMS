@@ -1214,8 +1214,9 @@ FE41 : 47 3F 37 30 29 23              ;
 FE47 : 1D 17 12 0D 08 04              ;
 ;note  D  E  FE F  FS G
 ;*************************************;
-;GWVTAB - Wave table, 1st byte wavelength
+;GWave table, 1st byte wavelength
 ;*************************************;
+;GWVTAB
 FE4D : 08                             ;GS2
 FE4E : 7F D9 FF D9 7F 24 00 24        ;
 ;
@@ -1290,8 +1291,9 @@ FF47 : 31 11 00 FF 00 0D 00           ;BONV
 ;TRBPAT-GFRTAB
 FF4E : 12 06 00 FF 01 09 28           ;TRBV
 ;*************************************;
-;GFRTAB - GWAVE FREQ PATTERN TABLE
+;GWAVE FREQ PATTERN TABLE
 ;*************************************; 
+;GFRTAB
 ;Bonus Sound
 FF55 : A0 98 90 88 80 78 70 68        ;BONSND
 FF5D : 60 58 50 44 40                 ;
