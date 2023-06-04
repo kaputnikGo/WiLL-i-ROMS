@@ -212,6 +212,10 @@ F0E9 : 7E EF FD   jmp  LEFFD          ;jump TALK (#09)
 F0EC : 81 03      cmpa  #$03          ;compare A with 03h
 F0EE : 2E 05      bgt  LF0F5          ;branch Z+(N(+)V)=0 IRQ4
 ;IRQ3A
+; This is the jump used for the extra
+; ship sound effect, which is the only
+; one in the game to use the Walsh
+; function sound machine.
 F0F0 : 80 02      suba  #$02          ;sub A with 02h
 F0F2 : 7E F6 60   jmp  LF660          ;jump WALSH
 ;IRQ4
@@ -1242,6 +1246,16 @@ F5D0 : 39         rts                 ;return subroutine
 ;* THE HARMONICS ARE TREATED IN ORDER OF DECREASING AVERAGE FREQUENCY.
 ;*************************************;
 ;ODDTBL
+; It seems that Mike Metz corrupted
+; the ODDTBL found in Joust to get the
+; specific waveform for the Extra Ship
+; sound effect.
+;
+; JOUST ODDTBL @ $FE88
+; 00 00 55 55 AA 55 5A 5A 96 69 66 66 CC 33 3C 3C 0F F0
+; SINISTAR ODDTBL @ $F5D1
+; 00 00 00 00 AA AA 0F F0 C3 F0 18 CF C7 A1 FF 00 00 FF
+;
 F5D1 : 0000 
 F5D3 : 0000 
 F5D5 : AAAA 
@@ -1259,7 +1273,7 @@ F5E1 : 00FF
 ;
 ;NLIST
 ;
-;LBL0
+;Unused Waveform 1
 F5E3 : 53 80 
 F5E5 : 08 
 F5E6 : 88 0A 
@@ -1279,7 +1293,7 @@ F5F6 : 80 10
 F5F8 : 23 
 F5F9 : 70 F6                          ;(-10)(TO LBL01)
 ;
-;LBL1
+;Unused Pattern 1
 F5FB : 96 2E 
 F5FD : 00 EC 
 F5FF : 22 00 
@@ -1287,7 +1301,7 @@ F601 : EC
 F602 : 80 20 
 F604 : F6 80 
 ;
-;LBL2
+;Extra Ship Waveform
 F606 : 53 
 F607 : 00 
 F608 : 0A 
@@ -1310,7 +1324,7 @@ F620 : 20
 ;LBL21
 F621 : 40 
 ;
-;LBL3
+;Extra Ship Pattern
 F622 : 64 6F 
 F624 : 03 
 F625 : 6F 01 
@@ -1320,7 +1334,7 @@ F62B : 2F 00
 F62D : FC 
 F62E : 80                             ;(STOP)
 ;
-;LBL4
+;Unused Waveform 2
 F62F : 53 
 F630 : 00 
 F631 : 09 
@@ -1338,21 +1352,37 @@ F643 : 01
 F644 : FE 23 50 
 F647 : 40                             ;(FIN)
 ;
-;LBL5
+;Unused Pattern 2
 F648 : 7D CE CE 
 F64B : 80                             ;(STOP)
 ;*************************************;
 ;WALSHT
-F64C : F5 E3                          ;LBL0
-F64E : F5 FB                          ;LBL1
-F650 : F6 06                          ;LBL2
-F652 : F6 22                          ;LBL3
-F654 : F6 2F                          ;LBL4
-F656 : F6 48                          ;LBL5
-F658 : F6 06                          ;LBL2
-F65A : F6 48                          ;LBL5
-F65C : F6 06                          ;LBL2
-F65D : F5 FB                          ;LBL1
+; The instruction at $F665 adds the
+; WALSHT table offset to get the
+; Waveform and Pattern data.  $04 is
+; the offset value used in Sinistar
+; so it loads the addresses found
+; at $F650 and $F652.
+;
+; Changing the offset in A register
+; at $F665 to either $00, $08, $0C, or
+; $10 will load an unused sound effect
+;
+; Table Offset = 00
+F64C : F5 E3                          ;Unused Waveform 1
+F64E : F5 FB                          ;Unused Pattern 1
+; Table Offset = 04
+F650 : F6 06                          ;Extra Ship Waveform
+F652 : F6 22                          ;Extra Ship Pattern
+; Table Offset = 08
+F654 : F6 2F                          ;Unused Waveform 2
+F656 : F6 48                          ;Unused Pattern 2
+; Table Offset = 0C
+F658 : F6 06                          ;Extra Ship Waveform (Unused)
+F65A : F6 48                          ;Unused Pattern 2
+; Table Offset = 10
+F65C : F6 06                          ;Extra Ship Waveform (Unused)
+F65D : F5 FB                          ;Unused Pattern 1
 ;*************************************;
 ;WALSH
 ;*************************************;
